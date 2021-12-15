@@ -2,77 +2,57 @@
 pragma solidity >=0.4.22 <0.9.0;
 
 contract CRVoting {
-   // Structure
-    struct Student {
-        string name;
-        string erp;
-        uint8 votes;
-        bool voted;
-        Status state;
-    }
-
-    // Enums
-    enum Status {
-        Default,
-        Student,
-        StudentInElection,
-        Elected
-    }
-
-    // Variables
     address public teacher;
+    uint public studentsInElectionCount = 0;
+
+    struct StudentInElection {
+        uint id;
+        string name;
+        uint32 erp;
+        uint8 votes;
+    }
 
     constructor() public {
         teacher = msg.sender;
     }
 
-    // Mappings
-    mapping (address => Student) public students;
+    mapping (address => bool) public students;
+    mapping (uint => StudentInElection) public studentsInElectionMapping;
 
-    // Arrays
-    address[] public studentsInElection;
-
-    // Events
-
-    // Modifiers
     modifier onlyTeacher () {
-        require (msg.sender == teacher, "Only Teacher can call this");
+        require (msg.sender == teacher, "You are not a Teacher");
         _;
     }
 
-    modifier onlyStudents () {
-        require(students[msg.sender].state == Status.Student, "Only students can do this");
-        require(students[msg.sender].voted == false, "You have already voted. Not allowed to do this");
+    modifier onlyStudent () {
+        require (students[msg.sender] == true, "You are not a Student");
         _;
     }
 
-    // Functions : to register student of the class
-    function registerStudents(address _address, string memory _name, string memory _erp) public onlyTeacher {
-        students[_address] = Student(_name, _erp, 0, false, Status.Student);
+    function registerStudent (address _studentAddress) public onlyTeacher {
+        students[_studentAddress] = true;
     }
 
-    // to apply for cr election
-    function applyForElection () public onlyStudents {
-        studentsInElection.push(msg.sender);
-        students[msg.sender].state = Status.StudentInElection;
-        students[msg.sender].voted = true;
+    function applyForElection (string memory name, uint32 erp) public onlyStudent {
+        studentsInElectionCount++;
+        students[msg.sender] = false;
+        studentsInElectionMapping[studentsInElectionCount] = StudentInElection(studentsInElectionCount, name, erp, 0);
     }
 
-    // vote a student
-    function giveVote (address _address) public onlyStudents {
-        require (students[_address].state == Status.StudentInElection, "The student in not in election");
-        students[_address].votes += 1;
-        students[msg.sender].voted = true;
+    function giveVote (uint id) public onlyStudent {
+        students[msg.sender] = false;
+        studentsInElectionMapping[id].votes += 1;
     }
 
-    // declare result
-    function declareResult () public view onlyTeacher returns (address) {
-        address winner = studentsInElection[0];
-        for(uint8 i = 1; i < studentsInElection.length; i++) {
-            if(students[studentsInElection[i-1]].votes < students[studentsInElection[i]].votes) {
-                winner = studentsInElection[i];
+    function declareWinner () public view onlyTeacher returns (string memory) {
+        uint8 max = studentsInElectionMapping[1].votes;
+        uint8 student = 1;
+        for(uint8 i = 2; i <= studentsInElectionCount; i++) {
+            if (max < studentsInElectionMapping[i].votes) {
+                max = studentsInElectionMapping[i].votes;
+                student = i;
             }
         }
-        return winner;
+        return studentsInElectionMapping[student].name;
     }
 }
