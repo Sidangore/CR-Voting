@@ -53,12 +53,12 @@ and the host will be active at port: 3000
     5.7. Show students standing in election : DONE
 
 ## HOW TO RUN the DAPP
-1. npm install
-2. npm start
-3. truffle migrate --reset
-4. node exportContract.js
-5. node updateExcelFile.js (Delete the 'Sheet 2' of the xlsx file)
-6. node exportStudentData.js
+1. `npm install`
+2. `npm start`
+3. `truffle migrate --reset`
+4. `node exportContract.js`
+5. `node updateExcelFile.js (Delete the 'Sheet 2' of the xlsx file)`
+6. `node exportStudentData.js`
 
 ## Available Scripts
 
