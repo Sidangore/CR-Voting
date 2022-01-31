@@ -64,11 +64,11 @@ and the host will be active at port: 3000
 
 ![EnteringTask](/IMG_7115.PNG)
 
-![EnteringTask](/IMG_7116.PNG)
+![EnteringTask](/IMG_7116.JPG)
 
-![EnteringTask](/IMG_7117.PNG)
+![EnteringTask](/IMG_7117.JPG)
 
-![EnteringTask](/IMG_7118.PNG)
+![EnteringTask](/IMG_7118.JPG)
 
 
 ## Available Scripts
