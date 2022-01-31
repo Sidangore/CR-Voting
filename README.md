@@ -60,6 +60,8 @@ and the host will be active at port: 3000
 5. `node updateExcelFile.js (Delete the 'Sheet 2' of the xlsx file)`
 6. `node exportStudentData.js`
 
+![EnteringTask](/screenshots/enteringtask.png)
+
 ## Available Scripts
 
 In the project directory, you can run:
